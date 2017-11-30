@@ -17,19 +17,19 @@ class SecretSantaTest {
    }
 
    @Test
-   void whenCreateNewRunnerWithoutTestFlag_thenEmailerIsRealImpl() throws Exception {
-      SecretSanta secretSanta = new SecretSanta();
-      assertThat(secretSanta, is(notNullValue()));
-      assertThat(getEmailerImpl(secretSanta), instanceOf(EmailerImpl.class));
-   }
-
-   @Test
-   void whenCreateNewRunnerWithTestFlag_thenEmailerIsDummy() throws Exception {
-      System.setProperty("TESTING", "true");
+   void whenCreateNewRunnerWithoutProdFlag_thenEmailerIsDummy() throws Exception {
       SecretSanta secretSanta = new SecretSanta();
       assertThat(secretSanta, is(notNullValue()));
       assertThat(getEmailerImpl(secretSanta), instanceOf(EmailerDummy.class));
-      System.clearProperty("TESTING");
+   }
+
+   @Test
+   void whenCreateNewRunnerWithProdFlag_thenEmailerIsRealImpl() throws Exception {
+      System.setProperty("PROD", "true");
+      SecretSanta secretSanta = new SecretSanta();
+      assertThat(secretSanta, is(notNullValue()));
+      assertThat(getEmailerImpl(secretSanta), instanceOf(EmailerImpl.class));
+      System.clearProperty("PROD");
    }
 
    private Emailer getEmailerImpl(SecretSanta secretSanta) throws NoSuchFieldException, IllegalAccessException {

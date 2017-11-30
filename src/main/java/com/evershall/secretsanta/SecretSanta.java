@@ -13,10 +13,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class SecretSanta {
 
    private static final Logger LOG = getLogger(SecretSanta.class);
-   private final boolean TESTING = Boolean.getBoolean("TESTING");
+   private final boolean PROD = Boolean.getBoolean("PROD");
 
-   // to allow testing of this application, if there is a VM flag of "TESTING", only log the emails that would be sent
-   private Emailer emailerImpl = TESTING ? new EmailerDummy() : new EmailerImpl();
+   /*
+    to allow testing of this application, the emails will only be sent
+    if there is a VM flag of "PROD" present
+     */
+   private Emailer emailerImpl = PROD ? new EmailerImpl() : new EmailerDummy();
    private final SantaEmailer emailer = new SantaEmailer(emailerImpl);
 
    private CsvFileReader fileReader = new CsvFileReader();
