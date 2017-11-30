@@ -15,6 +15,12 @@ public class SantaRecord {
       this.email = record.get("email");
    }
 
+   public SantaRecord(String name, String salutation, String email) {
+      this.name = name;
+      this.salutation = salutation;
+      this.email = email;
+   }
+
    @Override
    public String toString() {
       return new ToStringBuilder(this) //

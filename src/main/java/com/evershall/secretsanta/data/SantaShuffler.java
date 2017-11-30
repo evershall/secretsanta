@@ -12,9 +12,7 @@ public class SantaShuffler {
 
    public void shuffle(List<SantaRecord> santaRecords) {
       LOG.debug("run : records pre shuffle : {}", santaRecords);
-
       Collections.shuffle(santaRecords);
-
       LOG.debug("run : records post shuffle : {}", santaRecords);
    }
 
