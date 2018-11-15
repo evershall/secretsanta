@@ -15,21 +15,20 @@ public class CsvFileReader {
    private static final Logger LOG = getLogger(CsvFileReader.class);
    private final SantaRecordConverter converter = new SantaRecordConverter();
 
-   public List<SantaRecord> read(String filename) {
+   public List<SantaRecord> read(final String filename) {
       try {
          return readCsvFile(filename);
-      }
-      catch (IOException e) {
+      } catch (final IOException e) {
          LOG.error("Unable to read file ({})", filename, e);
          return emptyList();
       }
    }
 
-   private List<SantaRecord> readCsvFile(String filename) throws IOException {
+   private List<SantaRecord> readCsvFile(final String filename) throws IOException {
 
-      Reader in = new FileReader(filename);
-      Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-      List<SantaRecord> santaRecords = converter.convert(records);
+      final Reader in = new FileReader(filename);
+      final Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+      final List<SantaRecord> santaRecords = converter.convert(records);
       LOG.info("read in {} records from {}", santaRecords.size(), filename);
       LOG.debug("records : {}", santaRecords);
 

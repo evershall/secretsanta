@@ -14,27 +14,34 @@ public class EmailerImpl implements Emailer {
    private static final Logger LOG = getLogger(EmailerImpl.class);
 
    @Override
-   public void send(SantaRecord buyer, SantaRecord receiver) {
+   public void send(final SantaRecord buyer, final SantaRecord receiver) {
 
       try {
          setProperty("mail.smtp.host", "localhost");
          Transport.send(createMessage(buyer, receiver, Session.getDefaultInstance(getProperties())));
          LOG.debug("Sent message to {} successfully....", buyer.email);
-      }
-      catch (MessagingException mex) {
+      } catch (final MessagingException mex) {
          mex.printStackTrace();
       }
 
    }
 
-   private MimeMessage createMessage(SantaRecord buyer, SantaRecord receiver, Session session) throws MessagingException {
-      MimeMessage message = new MimeMessage(session);
+   private MimeMessage createMessage(final SantaRecord buyer, final SantaRecord receiver, final Session session) throws MessagingException {
+      final MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(buyer.email));
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(buyer.email));
       message.setSubject("shhh - secret santa!");
-      message.setText(buyer.salutation + ", you should buy a secret santa present for " + receiver.name + ".\n\n" + "Remember that this should be £10 - £15 maximum." + "\n\n"
-            + "Please make sure that you wrap and label the gift and bring it into the office before Fri 15th Dec.");
+      message.setText(constructMessageText(buyer, receiver));
       return message;
+   }
+
+   private String constructMessageText(final SantaRecord buyer, final SantaRecord receiver) {
+      return //
+            buyer.salutation + ", you should buy a secret santa present for " + receiver.name //
+                  + ".\n\n" //
+                  + "Remember that this should be £15 maximum." //
+                  + "\n\n" //
+                  + "Please make sure that you wrap and label the gift and bring it into the office before Fri 14th Dec.";
    }
 
 }

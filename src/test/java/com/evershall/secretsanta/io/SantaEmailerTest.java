@@ -12,7 +12,7 @@ import static org.easymock.EasyMock.*;
 class SantaEmailerTest {
 
    private SantaEmailer santaEmailer;
-   private Emailer mockEmailer = createStrictMock(Emailer.class);
+   private final Emailer mockEmailer = createStrictMock(Emailer.class);
 
    @BeforeEach
    void setUp() {
@@ -29,7 +29,7 @@ class SantaEmailerTest {
    @Test
    void whenOneRecord_thenSendOneEmail() {
 
-      List<SantaRecord> santaRecords = createList(1);
+      final List<SantaRecord> santaRecords = createList(1);
 
       mockEmailer.send(santaRecords.get(0), santaRecords.get(0));
 
@@ -41,7 +41,7 @@ class SantaEmailerTest {
    @Test
    void whenMultipleRecord_thenSendAllEmails() {
 
-      List<SantaRecord> santaRecords = createList(3);
+      final List<SantaRecord> santaRecords = createList(3);
 
       mockEmailer.send(santaRecords.get(0), santaRecords.get(1));
       mockEmailer.send(santaRecords.get(1), santaRecords.get(2));
@@ -52,9 +52,9 @@ class SantaEmailerTest {
       verify(mockEmailer);
    }
 
-   private List<SantaRecord> createList(int numRecords) {
+   private List<SantaRecord> createList(final int numRecords) {
 
-      List<SantaRecord> retval = new ArrayList<>();
+      final List<SantaRecord> retval = new ArrayList<>();
 
       for (int i = 1; i <= numRecords; i++)
          retval.add(new SantaRecord("" + i, "" + i, "" + i));

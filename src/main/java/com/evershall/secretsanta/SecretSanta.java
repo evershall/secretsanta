@@ -19,13 +19,13 @@ public class SecretSanta {
     to allow testing of this application, the emails will only be sent
     if there is a VM flag of "PROD" present
      */
-   private Emailer emailerImpl = PROD ? new EmailerImpl() : new EmailerDummy();
+   private final Emailer emailerImpl = PROD ? new EmailerImpl() : new EmailerDummy();
    private final SantaEmailer emailer = new SantaEmailer(emailerImpl);
 
-   private CsvFileReader fileReader = new CsvFileReader();
-   private SantaShuffler shuffler = new SantaShuffler();
+   private final CsvFileReader fileReader = new CsvFileReader();
+   private final SantaShuffler shuffler = new SantaShuffler();
 
-   public static void main(String[] args) {
+   public static void main(final String[] args) {
       waitForEnter("This will shuffle the names included in the file %s and then email each person with who they should buy for.\nPress ENTER to proceed or Ctrl-C to cancel",
             args[0]);
 
@@ -34,8 +34,8 @@ public class SecretSanta {
       LOG.debug("Finished");
    }
 
-   private void run(String filename) {
-      List<SantaRecord> santaRecords = fileReader.read(filename);
+   private void run(final String filename) {
+      final List<SantaRecord> santaRecords = fileReader.read(filename);
       shuffler.shuffle(santaRecords);
       emailer.sendEmails(santaRecords);
    }

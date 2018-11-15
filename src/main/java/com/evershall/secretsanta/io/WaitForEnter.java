@@ -4,9 +4,9 @@ import java.io.Console;
 
 public class WaitForEnter {
 
-   public static void waitForEnter(String message, Object... args) {
+   public static void waitForEnter(final String message, final Object... args) {
 
-      Console c = System.console();
+      final Console c = System.console();
 
       if (c != null) {
          if (message != null)

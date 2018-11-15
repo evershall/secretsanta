@@ -9,13 +9,13 @@ public class SantaRecord {
    public String salutation;
    public String email;
 
-   public SantaRecord(CSVRecord record) {
+   public SantaRecord(final CSVRecord record) {
       this.name = record.get("name");
       this.salutation = record.get("salutation");
       this.email = record.get("email");
    }
 
-   public SantaRecord(String name, String salutation, String email) {
+   public SantaRecord(final String name, final String salutation, final String email) {
       this.name = name;
       this.salutation = salutation;
       this.email = email;

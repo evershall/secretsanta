@@ -10,10 +10,8 @@ public class EmailerDummy implements Emailer {
    private static final Logger LOG = getLogger(EmailerDummy.class);
 
    @Override
-   public void send(SantaRecord buyer, SantaRecord receiver) {
-
+   public void send(final SantaRecord buyer, final SantaRecord receiver) {
       LOG.info("{} should buy for {}", buyer.name, receiver.name);
-
    }
 
 }
