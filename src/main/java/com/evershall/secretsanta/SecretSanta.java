@@ -5,6 +5,8 @@ import com.evershall.secretsanta.email.*;
 import com.evershall.secretsanta.io.*;
 import org.slf4j.Logger;
 
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.evershall.secretsanta.io.WaitForEnter.waitForEnter;
@@ -25,12 +27,19 @@ public class SecretSanta {
    private final CsvFileReader fileReader = new CsvFileReader();
    private final SantaShuffler shuffler = new SantaShuffler();
 
-   public static void main(final String[] args) {
+   public static void main(final String[] args) throws IOException {
       waitForEnter("This will shuffle the names included in the file %s and then email each person with who they should buy for.\nPress ENTER to proceed or Ctrl-C to cancel",
             args[0]);
 
       LOG.debug("Starting");
+
+      final InputStream propertiesFile = SecretSanta.class.getClassLoader().getResourceAsStream("email.properties");
+      if (propertiesFile == null)
+         throw new IllegalStateException("cannot load the email.properties file from the classpath");
+      System.getProperties().load(new InputStreamReader(propertiesFile, Charset.forName("UTF-8")));
+
       new SecretSanta().run(args[0]);
+
       LOG.debug("Finished");
    }
 

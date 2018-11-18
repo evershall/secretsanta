@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import static com.evershall.secretsanta.email.EmailBodyFactory.constructMessageText;
+import static com.evershall.secretsanta.email.PropertyHelper.getPropertyOrDie;
 import static java.lang.System.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -17,8 +19,11 @@ public class EmailerImpl implements Emailer {
    public void send(final SantaRecord buyer, final SantaRecord receiver) {
 
       try {
-         setProperty("mail.smtp.host", "localhost");
-         Transport.send(createMessage(buyer, receiver, Session.getDefaultInstance(getProperties())));
+         if (getProperties().containsKey("mail.smtp.host") == false)
+            setProperty("mail.smtp.host", "localhost");
+
+         final MimeMessage message = createMessage(buyer, receiver, Session.getDefaultInstance(getProperties()));
+         Transport.send(message);
          LOG.debug("Sent message to {} successfully....", buyer.email);
       } catch (final MessagingException mex) {
          mex.printStackTrace();
@@ -30,18 +35,9 @@ public class EmailerImpl implements Emailer {
       final MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(buyer.email));
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(buyer.email));
-      message.setSubject("shhh - secret santa!");
+      message.setSubject(getPropertyOrDie("email.subject"));
       message.setText(constructMessageText(buyer, receiver));
       return message;
-   }
-
-   private String constructMessageText(final SantaRecord buyer, final SantaRecord receiver) {
-      return //
-            buyer.salutation + ", you should buy a secret santa present for " + receiver.name //
-                  + ".\n\n" //
-                  + "Remember that this should be £15 maximum." //
-                  + "\n\n" //
-                  + "Please make sure that you wrap and label the gift and bring it into the office before Fri 14th Dec.";
    }
 
 }
