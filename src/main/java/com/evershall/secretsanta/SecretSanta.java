@@ -6,10 +6,10 @@ import com.evershall.secretsanta.io.*;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.evershall.secretsanta.io.WaitForEnter.waitForEnter;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class SecretSanta {
@@ -36,7 +36,7 @@ public class SecretSanta {
       final InputStream propertiesFile = SecretSanta.class.getClassLoader().getResourceAsStream("email.properties");
       if (propertiesFile == null)
          throw new IllegalStateException("cannot load the email.properties file from the classpath");
-      System.getProperties().load(new InputStreamReader(propertiesFile, Charset.forName("UTF-8")));
+      System.getProperties().load(new InputStreamReader(propertiesFile, UTF_8));
 
       new SecretSanta().run(args[0]);
 
